@@ -17,3 +17,14 @@ def db_connection
     connection.close
   end
 end
+
+
+get '/movies' do
+
+  erb :'movies/index'
+end
+
+get '/actors' do
+
+  erb :'actors/index'
+end

@@ -1,6 +1,27 @@
 <div class="text-center">
-  <h3>Actors Page</h3>
+  <h3>Actors</h3>
 </div>
+
+<div class="row">
+  <form method="get" action="/actors" class="text-center">
+    <div class="small-12 medium-2 medium-offset-5 columns">
+      <select name="page">
+        <% @amount_actor_pgs.times do |pag_number| %>
+          <% if @page == pag_number %>
+            <option value="<%= pag_number %>" selected="<%= @page %>" ><%= pag_number %></option>
+
+          <% else %>
+            <option value="<%= pag_number %>"><%= pag_number %></option>
+          <% end %>
+
+        <% end %>
+        <input type="submit" />
+      </select>
+    </div>
+  </form>
+</div>
+<br />
+<br />
 
 <% @results.each_row do |id, name| %>
   <div class="small-12 medium-12 columns">

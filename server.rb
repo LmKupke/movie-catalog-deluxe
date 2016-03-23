@@ -22,23 +22,35 @@ end
 
 
 get '/movies' do
-  order = "movies.title"
-  if params["Order"]
-    order = "movies.#{params['Order']}"
+  if params["Order"]== nil
+    @order = "movies.title"
+  elsif params["Order"]
+    @order = "movies.#{params['Order']}"
+  end
+
+  if params["page"] == nil
+    @page = 0
+  elsif params["page"] == "0"
+    @page = 0
+  elsif params["page"] == "1"
+    @page = 1
+  elsif
+    @page = params["page"].to_i
   end
 
   sql = <<-SQL
     SELECT movies.id, movies.title, movies.year, movies.rating, genres.name, studios.name
       FROM movies LEFT OUTER JOIN studios ON (movies.studio_id = studios.id)
       LEFT OUTER JOIN genres ON (movies.genre_id = genres.id)
-      ORDER BY #{order};
+      ORDER BY #{@order} LIMIT 20 OFFSET #{@page};
   SQL
 
   db_connection do |conn|
     @movies = conn.exec(sql)
-    # binding.pry
+    @total_amount = conn.exec("SELECT COUNT(title) FROM movies;")
   end
-
+  @total_amount = @total_amount.values.flatten!.first.to_i
+  @amount_movie_pgs = @total_amount/ 20
   erb :'movies/index'
 end
 
@@ -86,13 +98,6 @@ get '/actors' do
   end
   @total_amount = @total_amount.values.flatten!.first.to_i
   @amount_actor_pgs = @total_amount/ 20
-
-  # db_connection do |conn|
-  #
-  #
-  #
-  #   @results = conn.exec("SELECT id, name FROM actors ORDER BY name ;")
-  # end
 
   erb :'actors/index'
 end

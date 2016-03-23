@@ -1,15 +1,46 @@
-<form method="get" action="/movies">
-  <select name="Order">
-    <option value="rating">Rating</option>
-    <option value="title">Title</option>
-    <option value="year">Year</option>
-  </select>
-  <input type="submit" />
-</form>
-
 <div class="text-center">
   <h3>Movies Page</h3>
 </div>
+
+<div class="row">
+  <form method="get" action="/movies" class="text-center">
+    <div class="small-6 medium-6 columns">
+      <select name="Order">
+        <% if @order == "movies.title" %>
+          <option value="rating">Rating</option>
+          <option value="title" selected="title">Title</option>
+          <option value="year">Year</option>
+        <% elsif @order == "movies.rating" %>
+
+          <option value="rating"  selected="rating">Rating</option>
+          <option value="title">Title</option>
+          <option value="year">Year</option>
+        <% elsif @order == "movies.year" %>
+
+          <option value="rating">Rating</option>
+          <option value="title">Title</option>
+          <option value="year" selected="year">Year</option>
+        <% end %>
+      </select>
+    </div>
+    <div class="small-6 medium-6 columns">
+      <select name="page">
+        <% @amount_movie_pgs.times do |pag_number| %>
+          <% if @page == pag_number %>
+            <option value="<%= pag_number %>" selected="<%= @page %>" ><%= pag_number %></option>
+          <% else %>
+            <option value="<%= pag_number %>"><%= pag_number %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </div>
+    <input type="submit" />
+  </form>
+</div>
+
+
+<br />
+<br />
 
 <table class="hover">
   <thead>

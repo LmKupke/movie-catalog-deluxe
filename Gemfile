@@ -2,6 +2,7 @@ source "https://rubygems.org/"
 
 gem "pg"
 gem "sinatra"
+gem "tilt"
 
 group :development, :test do
   gem "pry"

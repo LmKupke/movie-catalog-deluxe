@@ -1,0 +1,37 @@
+<div class="text-center">
+  <% @result =  @movie_info.values %>
+  <h3> <%= @result[0][0] %></h3>
+</div>
+
+<div class="small-6 medium-6 column">
+  <ul class="no-bullet">
+
+    <label><li>Year:</label> <%= @result[0][1] %></li>
+    <label><li>Genre:</label><%= @result[0][3] %></li>
+    <label><li>Studio:</label><%= @result[0][4] %></li>
+  </ul>
+</div>
+
+<div class="small-6 medium-3 column">
+  <div class="callout secondary">
+    <label>Rating:
+      <%= @result[0][2] %>
+      </label>
+  </div>
+</div>
+
+
+<table class="hover">
+  <thead>
+    <th>Character</th>
+    <th>Actor</th>
+  </thead>
+  <tbody>
+  <% @actor_list.each_row do |character, actor_name, actor_id| %>
+    <tr>
+      <td><%= character %></td>
+      <td><a href="/actors/<%= actor_id %>"> <%= actor_name %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

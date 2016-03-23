@@ -62,6 +62,7 @@ DEPENDENCIES
   pry
   rspec
   sinatra
+  tilt
 
 BUNDLED WITH
    1.11.2

@@ -1,0 +1,19 @@
+<div class="text-center">
+  <% @result =  @indiv_actor.values %>
+  <h3> <%= @result[0][0] %></h3>
+</div>
+
+<table class="hover">
+  <thead>
+    <th>Character</th>
+    <th>Movie</th>
+  </thead>
+  <tbody>
+  <% @indiv_actor.each_row do |actor_name, character, movie_title, movie_id| %>
+    <tr>
+      <td><%= character %></td>
+      <td><a href="/movies/<%= movie_id %>"> <%= movie_title %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

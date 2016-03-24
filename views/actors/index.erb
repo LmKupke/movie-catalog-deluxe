@@ -2,21 +2,29 @@
   <h3>Actors</h3>
 </div>
 
-<div class="row">
+<div class="small-6 column">
   <form method="get" action="/actors" class="text-center">
-    <div class="small-12 medium-2 medium-offset-5 columns">
+    <div class="small-3 medium-5 medium-offset-4 columns" id="actor-change">
+      <label>Page Number:</label>
       <select name="page">
         <% @amount_actor_pgs.times do |pag_number| %>
           <% if @page == pag_number %>
             <option value="<%= pag_number %>" selected="<%= @page %>" ><%= pag_number %></option>
-
           <% else %>
             <option value="<%= pag_number %>"><%= pag_number %></option>
           <% end %>
-
         <% end %>
         <input type="submit" />
       </select>
+    </div>
+  </form>
+</div>
+<div class="small-6 column">
+  <form method="get" action="/actors" class="text-center" id="outside-box">
+    <div class="small-3 medium-5 medium-offset-2 column" id="actor-change">
+      <label>Search By Title:</label>
+      <input type="text" name="query" />
+      <input type="submit"  />
     </div>
   </form>
 </div>

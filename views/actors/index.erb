@@ -22,7 +22,7 @@
 <div class="small-6 column">
   <form method="get" action="/actors" class="text-center" id="outside-box">
     <div class="small-3 medium-5 medium-offset-2 column" id="actor-change">
-      <label>Search By Title:</label>
+      <label>Search By Name/Character:</label>
       <input type="text" name="query" />
       <input type="submit"  />
     </div>
@@ -31,10 +31,12 @@
 <br />
 <br />
 
-<% @results.each_row do |id, name| %>
+<% @results.each_row do |id, name, amount_movies| %>
   <div class="small-12 medium-12 columns">
     <div class="callout secondary">
-      <a href="/actors/<%= id %>"><%= name %></a>
+      <ul class="no-bullet">  
+      <li><a href="/actors/<%= id %>"><%= name %></a>  Starred in <%= amount_movies %> Movies</li>
+    </ul>
     </div>
   </div>
 

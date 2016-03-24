@@ -1,67 +1,80 @@
 <div class="text-center">
-  <h3>Movies Page</h3>
+  <h3>Movies</h3>
 </div>
 
-<div class="row">
-  <form method="get" action="/movies" class="text-center">
-    <div class="small-6 medium-6 columns">
-      <select name="Order">
-        <% if @order == "movies.title" %>
-          <option value="rating">Rating</option>
-          <option value="title" selected="title">Title</option>
-          <option value="year">Year</option>
-        <% elsif @order == "movies.rating" %>
+<div>
+  <div class="small-5 medium-5 column">
+    <form method="get" action="/movies" class="text-center" id="outside-box" >
+      <div class="small-6 medium-6 columns">
+        <label>Order By:</label>
+        <select name="Order">
+          <% if @order == "movies.title" %>
+            <option value="rating">Rating</option>
+            <option value="title" selected="title">Title</option>
+            <option value="year">Year</option>
+          <% elsif @order == "movies.rating" %>
 
-          <option value="rating"  selected="rating">Rating</option>
-          <option value="title">Title</option>
-          <option value="year">Year</option>
-        <% elsif @order == "movies.year" %>
+            <option value="rating"  selected="rating">Rating</option>
+            <option value="title">Title</option>
+            <option value="year">Year</option>
+          <% elsif @order == "movies.year" %>
 
-          <option value="rating">Rating</option>
-          <option value="title">Title</option>
-          <option value="year" selected="year">Year</option>
-        <% end %>
-      </select>
-    </div>
-    <div class="small-6 medium-6 columns">
-      <select name="page">
-        <% @amount_movie_pgs.times do |pag_number| %>
-          <% if @page == pag_number %>
-            <option value="<%= pag_number %>" selected="<%= @page %>" ><%= pag_number %></option>
-          <% else %>
-            <option value="<%= pag_number %>"><%= pag_number %></option>
+            <option value="rating">Rating</option>
+            <option value="title">Title</option>
+            <option value="year" selected="year">Year</option>
           <% end %>
-        <% end %>
-      </select>
-    </div>
-    <input type="submit" />
-  </form>
+        </select>
+      </div>
+      <div class="small-6 medium-6 columns">
+        <label>Page Number:</label>
+        <select name="page" >
+          <% @amount_movie_pgs.times do |pag_number| %>
+            <% if @page == pag_number %>
+              <option value="<%= pag_number %>" selected="<%= @page %>" ><%= pag_number %></option>
+            <% else %>
+              <option value="<%= pag_number %>"><%= pag_number %></option>
+            <% end %>
+          <% end %>
+        </select>
+      </div>
+      <input type="submit" />
+    </form>
+  </div>
+
+  <div class="small-5 small-offset-2 medium-5 column" >
+    <form method="get" action="/movies" class="text-center" id="outside-box">
+      <div class="small-6 column">
+        <label>Search By Title:</label>
+        <input type="text" name="query" />
+        <input type="submit"  />
+      </div>
+    </form>
+  </div>
 </div>
 
 
-<br />
-<br />
 
-<table class="hover">
-  <thead>
-    <th>Movie</th>
-    <th>Year</th>
-    <th>Rating</th>
-    <th>Genre</th>
-    <th>Studio</th>
-  </thead>
-  <tbody>
-    <% @movies.each_row do |id, movie_name, movie_year, movie_rating, genre, studio| %>
-  <!-- <div class="small-12 medium-12 columns"> -->
-    <!-- <div class="callout secondary"> -->
-      <tr>
-        <td><a href="/movies/<%= id %>"><%= movie_name %></a></td>
-        <td><%= movie_year %></td>
-        <td><%= movie_rating %></td>
-        <td><%= genre %></td>
-        <td><%= studio %></td>
-      </tr>
-    <% end %>
-  <!-- </div> -->
-  </tbody>
-</table>
+
+<div>
+  <table class="hover">
+    <thead>
+      <th>Movie</th>
+      <th>Year</th>
+      <th>Rating</th>
+      <th>Genre</th>
+      <th>Studio</th>
+    </thead>
+    <tbody>
+      <% @movies.each_row do |id, movie_name, movie_year, movie_rating, genre, studio| %>
+        <tr>
+          <td><a href="/movies/<%= id %>"><%= movie_name %></a></td>
+          <td><%= movie_year %></td>
+          <td><%= movie_rating %></td>
+          <td><%= genre %></td>
+          <td><%= studio %></td>
+        </tr>
+      <% end %>
+
+    </tbody>
+  </table>
+</div>

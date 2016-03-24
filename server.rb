@@ -22,31 +22,47 @@ end
 
 
 get '/movies' do
-  if params["Order"]== nil
-    @order = "movies.title"
-  elsif params["Order"]
-    @order = "movies.#{params['Order']}"
-  end
 
-  if params["page"] == nil
-    @page = 0
-  elsif params["page"] == "0"
-    @page = 0
-  elsif params["page"] == "1"
-    @page = 1
-  elsif
-    @page = params["page"].to_i
-  end
-
-  sql = <<-SQL
+  if params["query"] != nil
+    @title = '%' + params['query'] + '%'
+    sql = <<-SQL
     SELECT movies.id, movies.title, movies.year, movies.rating, genres.name, studios.name
       FROM movies LEFT OUTER JOIN studios ON (movies.studio_id = studios.id)
       LEFT OUTER JOIN genres ON (movies.genre_id = genres.id)
-      ORDER BY #{@order} LIMIT 20 OFFSET #{@page};
-  SQL
+      WHERE movies.title ILIKE $1 OR movies.synopsis ILIKE $1;
+    SQL
+  else
+
+    if params["Order"]== nil
+      @order = "movies.title"
+    elsif params["Order"]
+      @order = "movies.#{params['Order']}"
+    end
+
+    if params["page"] == nil
+      @page = 0
+    elsif params["page"] == "0"
+      @page = 0
+    elsif params["page"] == "1"
+      @page = 1
+    elsif
+      @page = params["page"].to_i
+    end
+
+    sql = <<-SQL
+      SELECT movies.id, movies.title, movies.year, movies.rating, genres.name, studios.name
+        FROM movies LEFT OUTER JOIN studios ON (movies.studio_id = studios.id)
+        LEFT OUTER JOIN genres ON (movies.genre_id = genres.id)
+        ORDER BY #{@order} LIMIT 20 OFFSET #{@page};
+    SQL
+  end
 
   db_connection do |conn|
-    @movies = conn.exec(sql)
+    if @title != nil
+      @movies = conn.exec_params(sql,[@title])
+    else
+      @movies = conn.exec(sql)
+    end
     @total_amount = conn.exec("SELECT COUNT(title) FROM movies;")
   end
   @total_amount = @total_amount.values.flatten!.first.to_i

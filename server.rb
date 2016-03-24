@@ -93,24 +93,35 @@ get '/movies/:id' do
 end
 
 get '/actors' do
-  @page = 0
-  if params["page"] == "0"
+  if params["query"] != nil
+    @actor_query = '%' + params['query'] + '%'
+    sql = <<-SQL
+    SELECT actors.id, actors.name FROM actors
+      LEFT OUTER JOIN cast_members ON (actors.id = cast_members.actor_id)
+      WHERE actors.name ILIKE $1 OR cast_members.character ILIKE $1;
+    SQL
+  elsif params["query"] == nil
     @page = 0
-  elsif params["page"] == "1"
-    @page = 1
-  elsif
-    @page = params["page"].to_i
+    if params["page"] == "0"
+      @page = 0
+    elsif params["page"] == "1"
+      @page = 1
+    elsif
+      @page = params["page"].to_i
+    end
+    sql = <<-SQL
+      SELECT id, name FROM actors
+      ORDER BY name LIMIT 20
+      OFFSET $1;
+    SQL
   end
-
-  sql = <<-SQL
-    SELECT id, name FROM actors
-    ORDER BY name LIMIT 20
-    OFFSET $1;
-  SQL
   db_connection do |conn|
     @total_amount = conn.exec("SELECT COUNT(name) FROM actors;")
-
-    @results = conn.exec_params(sql,[@page])
+    if @actor_query != nil
+      @results = conn.exec_params(sql,[@actor_query])
+    else
+      @results = conn.exec_params(sql,[@page])
+    end
   end
   @total_amount = @total_amount.values.flatten!.first.to_i
   @amount_actor_pgs = @total_amount/ 20
